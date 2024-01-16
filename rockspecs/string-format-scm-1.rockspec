@@ -4,7 +4,7 @@ source = {
     url = "git+https://github.com/mah0x211/lua-string-format.git",
 }
 description = {
-    summary = "additional features to the error module.",
+    summary = "formatted output conversion module with asprintf and snprintf.",
     homepage = "https://github.com/mah0x211/lua-string-format",
     license = "MIT/X11",
     maintainer = "Masatoshi Fukunaga",
