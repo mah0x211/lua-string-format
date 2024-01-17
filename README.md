@@ -29,7 +29,7 @@ print(s) --> pi = 3.14159
 ```
 
 
-## s, unused = format( fmt [, ... ] )
+## s, unused, nunused = format( fmt [, ... ] )
 
 converts the specified arguments to formatted output using `asprintf` and `snprintf`, and returns the result string and unused arguments.
 
@@ -55,7 +55,7 @@ please see the manual page of `man 3 printf` for more information.
 
 - `s:string`: the formatted output string.
 - `unused:table?`: the unused arguments placed in the table.
-
+- `nunused:integer?`: the number of unused arguments.
 
 ## License
 

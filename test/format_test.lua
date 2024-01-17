@@ -14,16 +14,29 @@ local testcase = setmetatable({}, {
 
 function testcase.no_format()
     -- test that format() returns a string
-    local s, unused = format('hello world')
+    local s, unused, nunused = format('hello world')
     assert.equal(s, 'hello world')
     assert.is_nil(unused)
+    assert.is_nil(nunused)
+
+    -- test that return unused arguments and number of unused arguments
+    s, unused, nunused = format('hello %s', 'world', 'foo', nil, 'bar', nil,
+                                'baz', nil)
+    assert.equal(s, 'hello world')
+    assert.equal(unused, {
+        'foo',
+        nil,
+        'bar',
+        nil,
+        'baz',
+    })
+    assert.equal(nunused, 6)
 end
 
 function testcase.character_format()
     -- test that character type: c
-    local s, unused = format("%-3c", 'A')
+    local s = format("%-3c", 'A')
     assert.match(s, "A  ")
-    assert.is_nil(unused)
 
     -- test that can be used with integer
     s = format("%c", 65)
@@ -78,17 +91,17 @@ function testcase.string_format()
             expected = 'hello world',
         },
     }) do
-        local s, unused = format('hello %s', v.arg)
+        local s = format('hello %s', v.arg)
         assert.re_match(s, v.expected)
-        assert.is_nil(unused)
     end
 
     -- test that return formatted string and unused arguments
-    local s, unused = format('hello %p', 'error', 'world')
+    local s, unused, nunused = format('hello %p', 'error', 'world')
     assert.re_match(s, 'hello (\\(nil\\)|0x[0-9a-f]+)')
     assert.equal(unused, {
         'world',
     })
+    assert.equal(nunused, 1)
 end
 
 function testcase.quoted_string_format()
@@ -228,18 +241,16 @@ end
 
 function testcase.integer_format()
     -- test that integer type: d, i, o, u, x, X
-    local s, unused = format('%+d %-5i %05o %u %#x %#X %ld %d %d', 42, 42, 42,
-                             42, 42, 42, 42, true, false)
+    local s = format('%+d %-5i %05o %u %#x %#X %ld %d %d', 42, 42, 42, 42, 42,
+                     42, 42, true, false)
     assert.equal(s, "+42 42    00052 42 0x2a 0X2A 42 1 0")
-    assert.is_nil(unused)
 end
 
 function testcase.float_format()
     -- test that floting point type: e, E, f, F, g, G
-    local s, unused = format("%+e %-.*E %+f % F %.1g %.1G", 1.23, 2, 1.23, 1.23,
-                             1.23, 1.23, 1.23)
+    local s = format("%+e %-.*E %+f % F %.1g %.1G", 1.23, 2, 1.23, 1.23, 1.23,
+                     1.23, 1.23)
     assert.match(s, "+1.230000e+00 1.23E+00 +1.230000  1.230000 1 1")
-    assert.is_nil(unused)
 
     -- test that floating point in hexdigit: a, A
     s = format("%a %#A", 1.23, 1.23)
@@ -248,23 +259,20 @@ end
 
 function testcase.pointer_format()
     -- test that pointer type: p
-    local s, unused = format("%p", {})
+    local s = format("%p", {})
     assert.match(s, "0x[0-9a-f]+", false)
-    assert.is_nil(unused)
 end
 
 function testcase.escape_format()
     -- test that escape: %
-    local s, unused = format("%%")
+    local s = format("%%")
     assert.match(s, "%")
-    assert.is_nil(unused)
 end
 
 function testcase.error_format()
     -- test that print errno: m
-    local s, unused = format("%m")
+    local s = format("%m")
     assert(s ~= nil)
-    assert.is_nil(unused)
 end
 
 function testcase.unsupported_format()
