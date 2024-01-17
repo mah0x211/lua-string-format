@@ -605,7 +605,8 @@ static int format_lua(lua_State *L)
             // push top of stack to unused argument table
             lua_rawseti(L, tblidx, i);
         }
-        return 2;
+        lua_pushinteger(L, unused);
+        return 3;
     }
     return 1;
 }
