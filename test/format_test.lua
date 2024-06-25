@@ -31,6 +31,21 @@ function testcase.no_format()
         'baz',
     })
     assert.equal(nunused, 6)
+
+    -- test that return all arguments if first argument is not a string
+    s, unused, nunused = format(true, 'world', 'foo', nil, 'bar', nil, 'baz',
+                                nil)
+    assert.equal(s, '')
+    assert.equal(unused, {
+        true,
+        'world',
+        'foo',
+        nil,
+        'bar',
+        nil,
+        'baz',
+    })
+    assert.equal(nunused, 8)
 end
 
 function testcase.character_format()

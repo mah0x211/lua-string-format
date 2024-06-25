@@ -45,10 +45,13 @@ the format `fmt` specifiers are the same as `snprintf` of the C standard library
 
 please see the manual page of `man 3 printf` for more information.
 
+**NOTE**
+
+if the `fmt` is not a string, all arguments (including `fmt`) are returned as unused arguments.
 
 **Parameters**
 
-- `fmt:string`: the format string that describes the format of the output.
+- `fmt:any`: the format string that describes the format of the output.
 - `...:any`: the arguments to be converted to formatted output according to the format string.
 
 **Returns**
