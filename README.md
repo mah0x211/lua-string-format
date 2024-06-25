@@ -49,6 +49,27 @@ please see the manual page of `man 3 printf` for more information.
 
 if the `fmt` is not a string, all arguments (including `fmt`) are returned as unused arguments.
 
+```lua
+local dump = require('dump')
+local s, unused, nunused = format( true, 'foo', 1, 'bar', 2 )
+print(dump({
+    s = s,
+    unused = unused,
+    nunused = nunused
+}))
+-- {
+--     nunused = 5,
+--     s = "",
+--     unused = {
+--         [1] = true,
+--         [2] = "foo",
+--         [3] = 1,
+--         [4] = "bar",
+--         [5] = 2
+--     }
+-- }
+```
+
 **Parameters**
 
 - `fmt:any`: the format string that describes the format of the output.
