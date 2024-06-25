@@ -439,10 +439,16 @@ static inline int uint2str(lua_State *L, char *buf, size_t len,
 static int format_arguments(lua_State *L, const int fmt_idx)
 {
     const int narg   = lua_gettop(L);
-    const char *fmt  = luaL_checkstring(L, fmt_idx);
-    const char *head = fmt;
-    const char *cur  = head;
+    const char *fmt  = NULL;
+    const char *head = NULL;
+    const char *cur  = NULL;
     int nextarg      = fmt_idx;
+
+    if (lua_type(L, fmt_idx) != LUA_TSTRING) {
+        // ignore non-string format string
+        return 0;
+    }
+    fmt = head = cur = lua_tostring(L, fmt_idx);
 
     // parse format specifiers
     while (*cur) {
@@ -594,10 +600,10 @@ static int format_lua(lua_State *L)
     lua_concat(L, lua_gettop(L) - narg);
 
     if (unused > 0) {
-        int tblidx = lastarg + 1;
+        int tblidx = lastarg + 2;
 
-        // replace last-argument with concatenated string
-        lua_replace(L, lastarg);
+        // place result string to the previous position of unused argument table
+        lua_insert(L, lastarg + 1);
         // create table for unused arguments
         lua_createtable(L, unused, 0);
         lua_insert(L, tblidx);
