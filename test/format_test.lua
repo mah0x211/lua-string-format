@@ -296,7 +296,7 @@ function testcase.unsupported_format()
     assert.match(err, "unsupported type field")
 end
 
-local gettime = require('time.clock').gettime
+local gettime = os.time
 local stdout = io.stdout
 local elapsed = gettime()
 local errs = {}
