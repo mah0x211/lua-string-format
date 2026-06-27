@@ -21,14 +21,15 @@
  *
  */
 
+// lua
+#include <lauxlib.h>
+
+// system
 #include <ctype.h>
 #include <errno.h>
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
-// lua
-#include <lauxlib.h>
-#include <lua.h>
 
 static int push_string(lua_State *L)
 {
